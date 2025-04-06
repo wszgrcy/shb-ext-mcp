@@ -1,0 +1,97 @@
+{
+	"name": "shb-mcp",
+	"displayName": "shb-mcp",
+	"description": "生花笔插件-mcp服务器",
+	"version": "0.0.1",
+	"publisher": "wszgrcy",
+	"repository": "https://github.com/wszgrcy/shb-mcp",
+	"engines": {
+		"vscode": "^1.98.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"extensionDependencies": [
+		"wszgrcy.shenghuabi"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./index.js",
+	"contributes": {
+		"commands": [],
+		"configuration": [
+			{
+				"title": "mcp配置",
+				"properties": {
+					"shb-mcp.server": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"sse": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"url": {
+											"type": "string"
+										},
+										"authentication": {
+											"type": "object",
+											"additionalProperties": false,
+											"properties": {
+												"bearerToken": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"bearerToken"
+											]
+										}
+									},
+									"required": [
+										"url",
+										"authentication"
+									]
+								},
+								"default": []
+							},
+							"stdio": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"additionalProperties": false,
+									"properties": {
+										"command": {
+											"type": "string"
+										},
+										"args": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+										"env": {
+											"type": "object",
+											"additionalProperties": {}
+										},
+										"cwd": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"command",
+										"args"
+									]
+								},
+								"default": []
+							}
+						},
+						"required": []
+					}
+				}
+			}
+		]
+	}
+}
