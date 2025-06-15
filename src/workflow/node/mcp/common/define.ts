@@ -1,5 +1,6 @@
 import * as v from 'valibot';
 import { ComponentContext, ComponentInput } from '@shenghuabi/sdk/componentDefine';
+import { debounceTime } from 'rxjs';
 
 export function NODE_DEFINE({ Action }: ComponentInput) {
   return v.object({
@@ -14,14 +15,8 @@ export function NODE_DEFINE({ Action }: ComponentInput) {
                 environments: ['default'],
                 actions: [
                   Action.define({ type: 'picklist', inputs: { options: [] } }),
-                  Action.hookDefine({
-                    allFieldsResolved(field) {
-                      (field.context as ComponentContext).pluginMethod('getMcpClientList', []).then((options: any) => {
-                        field.inputs.update((inputs) => {
-                          return { ...inputs, options };
-                        });
-                      });
-                    },
+                  Action.patchAsyncInputs({
+                    options: (field) => (field.context as ComponentContext).pluginMethod('getMcpClientList', []),
                   }),
                 ],
               })
@@ -36,12 +31,15 @@ export function NODE_DEFINE({ Action }: ComponentInput) {
             environments: ['display', 'default'],
             actions: [
               Action.define({ type: 'string' }),
-              Action.valueChange({
-                list: [undefined],
-                debounceTime: 100,
-                when: ([value]: string[], field) => {
-                  field.context.changeHandleByTemplate(field, value, 1);
-                },
+              Action.valueChange((fn) => {
+                fn({ list: [undefined] })
+                  .pipe(debounceTime(100))
+                  .subscribe(({ list: [value], field }) => {
+                    if (typeof value !== 'string') {
+                      return;
+                    }
+                    field.context.changeHandleByTemplate(field, value, 1);
+                  });
               }),
             ],
           })

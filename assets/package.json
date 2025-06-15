@@ -2,7 +2,7 @@
 	"name": "shb-mcp",
 	"displayName": "shb-mcp",
 	"description": "生花笔插件-mcp服务器",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "wszgrcy",
 	"repository": "https://github.com/wszgrcy/shb-mcp",
 	"engines": {

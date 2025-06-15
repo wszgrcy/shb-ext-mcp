@@ -7,7 +7,7 @@ export function mcpRunner(input: ManifestInput, options: Options) {
     #chat = input.inject(input.provider.root.ChatService);
     #chatUtil = input.inject(input.provider.root.ChatUtilService);
     override async run() {
-      const node = this.getParsedNode(NODE_DEFINE(input.componentDefine));
+      const node = this.getParsedNode(NODE_DEFINE(input.componentDefine as any));
       const mcpName = node.data.config.name;
       const client = (await options.getMcpClientObj())[mcpName];
       const chatInput = this.#chatUtil.interpolate(node.data.value, this.inputValueObject$$());
